@@ -1,0 +1,76 @@
+[project]
+name = "manimations"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "manim>=0.19.1",
+]
+
+# -------------------------
+# Ruff configuration
+# -------------------------
+[tool.ruff]
+# Keep this scoped to your project; Manim itself may not be fully typed.
+src = ["manimations"]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+# Start from the default set (pycodestyle/pyflakes) and selectively ignore.
+select = ["E", "F", "I"]
+
+# Manim examples commonly use `from manim import *` to access constants like `UP`, `DEGREES`, etc.
+# If you prefer explicit imports, remove these ignores and update your scene files.
+ignore = [
+    "F403", # `from ... import *` used; unable to detect undefined names
+    "F405", # may be undefined, or defined from star imports
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Manim scene files: allow wildcard imports and "unused" names that are referenced indirectly by Manim.
+"**/main.py" = [
+    "F403",
+    "F405",
+]
+
+[tool.ruff.format]
+# Match Black-style formatting.
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+# -------------------------
+# basedpyright / pyright configuration
+# -------------------------
+[tool.basedpyright]
+# Manim's camera/frame typing is incomplete in stubs; treat this project as "pragmatic typing".
+typeCheckingMode = "basic"
+
+# This is the rule behind:
+# "Cannot access attribute 'frame' for class 'Camera'" (reportAttributeAccessIssue)
+reportAttributeAccessIssue = false
+
+# Avoid noisy "unknown member" errors from external libs.
+reportUnknownMemberType = false
+reportUnknownArgumentType = false
+reportUnknownVariableType = false
+reportUnknownParameterType = false
+reportUnknownLambdaType = false
+
+# Manim uses dynamic attributes; this specific one triggers often with MovingCameraScene.
+reportGeneralTypeIssues = true
+
+# Wildcard-import friendliness for Manim scenes.
+reportWildcardImportFromLibrary = false
+reportUndefinedVariable = false
+
+# Keep the signal for real issues in your code.
+reportMissingImports = true
+reportMissingTypeStubs = false
+
+# If you want to fully silence diagnostics in scene scripts, uncomment:
+# [tool.basedpyright]
+# ignore = ["**/my-project/**", "**/main.py"]
