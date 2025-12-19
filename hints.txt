@@ -1,0 +1,4 @@
+source .venv/bin/activate
+
+manim -pql main.py FractalBranchingTree
+manim -pql hello.py HelloLaTeX
