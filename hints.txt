@@ -2,3 +2,6 @@ source .venv/bin/activate
 
 manim -pql main.py FractalBranchingTree
 manim -pql hello.py HelloLaTeX
+manim -pql eq.py CorrectLaTeXSubstringColoring
+
+manim -pql metcalf.py MetcalfesLawScene
